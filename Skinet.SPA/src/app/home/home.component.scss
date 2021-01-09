@@ -1,0 +1,27 @@
+.featured {
+  height: 250px;
+}
+
+.banner {
+  object-fit: cover;
+  height: 550px;
+  width: 100%;
+}
+
+.btn {
+  width: 30%;
+}
+
+.partner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 0.7rem;
+}
+
+.partner img {
+  width: 60%;
+}
+
+.title {
+  background-color: #f5f5f5;
+}

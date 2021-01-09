@@ -1,0 +1,17 @@
+<div class="card h-100 shadow-sm">
+  <div class="image position-relative">
+    <img src="{{product.imageUrl}}" alt="{{product.name}}" class="img-fluid bg-info">
+    <div class="d-flex align-items-center justify-content-center hover-overlay">
+      <a (click)="addItemToBasket()" class="btn btn-md btn-primary  mr-2 text-white"><i
+          class="fa fa-shopping-cart"></i></a>
+      <a routerLink="/shop/{{product.id}}" class="btn btn-md btn-primary">View</a>
+    </div>
+  </div>
+  <div class="card-body d-flex flex-column">
+    <a routerLink="/shop/{{product.id}}">
+      <h6 class="text-uppercase">{{product.name}}</h6>
+    </a>
+    <span class="mb-2">{{product.price | currency}}</span>
+    <span class="mb-2 text-center bg-primary text-white">{{product.tierPriceDescription}}</span>
+  </div>
+</div>
