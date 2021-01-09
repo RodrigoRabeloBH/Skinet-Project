@@ -13,7 +13,7 @@ https://chocolatey.org/packages?q=redis
 
 ### Pre requisitos
 
-Dotnet core 3.1, Angular 8
+Dotnet core 3.1, Angular 8.3.21.
 
 ## Autore
 
