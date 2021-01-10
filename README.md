@@ -6,8 +6,6 @@ Projeto desenvolvido segundo desafio Siteware.
 
 ## Preparando o ambiente Windows
 
-Clone o repositório
-
 ### Dependencias: chocolatey, Redis.
 Links:
 https://chocolatey.org/install || 
