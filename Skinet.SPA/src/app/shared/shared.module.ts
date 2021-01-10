@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PaginationModule } from 'ngx-bootstrap';
+import { BsDropdownModule, PaginationModule } from 'ngx-bootstrap';
 import { CarouselModule } from 'ngx-bootstrap';
 import { OrderTotalComponent } from './components/order-total/order-total.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,11 +12,15 @@ import { OrderTotalComponent } from './components/order-total/order-total.compon
     CommonModule,
     PaginationModule.forRoot(),
     CarouselModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    ReactiveFormsModule,
   ],
   exports: [
     PaginationModule,
     CarouselModule,
-    OrderTotalComponent
+    OrderTotalComponent,
+    ReactiveFormsModule,
+    BsDropdownModule, 
   ]
 })
 export class SharedModule { }

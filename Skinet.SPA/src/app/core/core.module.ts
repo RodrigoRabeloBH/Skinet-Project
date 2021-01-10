@@ -7,6 +7,7 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
 import { TestErrorComponent } from './test-error/test-error.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ServerErrorComponent } from './server-error/server-error.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -15,12 +16,14 @@ import { ServerErrorComponent } from './server-error/server-error.component';
     SectionHeaderComponent,
     TestErrorComponent,
     NotFoundComponent,
-    ServerErrorComponent
+    ServerErrorComponent,
+
   ],
   imports: [
     CommonModule,
     RouterModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    SharedModule
   ],
   exports: [
     NavBarComponent,

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Skinet.Model;
 using Skinet.Service.Interfaces;
@@ -7,6 +8,7 @@ namespace Skinet.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class TierPriceController : ControllerBase
     {
         private readonly ITierPriceRepository _rep;

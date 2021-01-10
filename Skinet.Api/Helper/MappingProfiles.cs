@@ -1,6 +1,7 @@
 using AutoMapper;
 using Skinet.Api.Dto;
 using Skinet.Model;
+using Skinet.Model.Identity;
 
 namespace Skinet.Api.Helper
 {
@@ -16,6 +17,14 @@ namespace Skinet.Api.Helper
             .ForMember(dest => dest.TierPriceId, opt => opt.MapFrom(src => src.TierPrice.Id))
             .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom<ProductUrlResolver>())
             .ReverseMap();
+
+            CreateMap<AppUser, UserDto>();
+
+            CreateMap<Address, AddressDto>().ReverseMap();
+
+            CreateMap<CustomerBasketDto, CustomerBasket>().ReverseMap();
+            
+            CreateMap<BasketItemDto, BasketItem>().ReverseMap();
         }
     }
 }

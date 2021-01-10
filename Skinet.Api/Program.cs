@@ -1,12 +1,15 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Skinet.Api;
 using Skinet.Data;
+using Skinet.Data.Identity;
+using Skinet.Model.Identity;
 
 namespace Skinet.APi
 {
@@ -29,6 +32,14 @@ namespace Skinet.APi
                     await context.Database.MigrateAsync();
 
                     await SkinetSeedData.SeedAsync(context, loggerFactory);
+
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+
+                    var identityContext = services.GetRequiredService<AppIdentityContext>();
+
+                    await identityContext.Database.MigrateAsync();
+
+                    await AppIdentityContextSeed.SeedUser(userManager);
                 }
                 catch (Exception ex)
                 {

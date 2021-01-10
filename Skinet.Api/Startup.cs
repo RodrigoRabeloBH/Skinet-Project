@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Skinet.Api.Errors;
+using Skinet.Api.Extensions;
 using Skinet.Api.Helper;
 using Skinet.Api.Middleware;
 using Skinet.Data;
+using Skinet.Data.Identity;
 using Skinet.Data.Repositoty;
 using Skinet.Service.Interfaces;
 using StackExchange.Redis;
@@ -34,6 +35,11 @@ namespace Skinet.Api
 
             services.AddDbContext<SkinetContext>();
 
+            services.AddDbContext<AppIdentityContext>(op =>
+            {
+                op.UseSqlite(Configuration.GetConnectionString("ItentityConnection"));
+            });
+
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {
                 var config = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis"), true);
@@ -50,6 +56,10 @@ namespace Skinet.Api
             services.AddScoped<ITierPriceRepository, TierPriceRepository>();
 
             services.AddScoped<IBasketRepository, BasketRepository>();
+
+            services.AddScoped<ITokenServices, TokenService>();
+
+            services.AddIdentityServices(Configuration);
 
             services.AddCors(option =>
             {
@@ -76,7 +86,33 @@ namespace Skinet.Api
                 };
             });
 
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Skinet API", Version = "v1" }));
+            services.AddSwaggerGen(c =>
+             {
+                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Skinet API", Version = "v1" });
+
+                 var securitySchema = new OpenApiSecurityScheme
+                 {
+                     Description = "JWT Auth Bearer Scheme",
+                     Name = "Authorization",
+                     In = ParameterLocation.Header,
+                     Type = SecuritySchemeType.Http,
+                     Scheme = "bearer",
+                     Reference = new OpenApiReference
+                     {
+                         Type = ReferenceType.SecurityScheme,
+                         Id = "Bearer"
+                     }
+                 };
+
+                 c.AddSecurityDefinition("Bearer", securitySchema);
+
+                 var securityRequirement = new OpenApiSecurityRequirement
+                 {
+                     { securitySchema, new [] {"Bearer"}}
+                 };
+
+                 c.AddSecurityRequirement(securityRequirement);
+             });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -91,6 +127,8 @@ namespace Skinet.Api
             app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
