@@ -17,7 +17,7 @@ https://chocolatey.org/packages?q=redis
 
 Dotnet core 3.1, Angular 8
 
-## Autore
+## Autor
 
 ***Rodrigo Rabelo*** 
 
