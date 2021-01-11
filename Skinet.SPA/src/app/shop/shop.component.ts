@@ -14,7 +14,7 @@ export class ShopComponent implements OnInit {
   brands: Brand[];
   productTypes: ProductType[];
   index = 1;
-  length = 6;
+  length = 8;
   name: string;
   total: number;
   totalPage: number;
