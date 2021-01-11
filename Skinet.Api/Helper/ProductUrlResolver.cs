@@ -17,7 +17,7 @@ namespace Skinet.Api.Helper
         {
             if (!string.IsNullOrEmpty(source.ImageUrl))
             {
-                return _config["ApiUrl"] + "images/products/" + source.ImageUrl;
+                return _config["ApiUrl"] + source.ImageUrl;
             }
             return null;
         }
