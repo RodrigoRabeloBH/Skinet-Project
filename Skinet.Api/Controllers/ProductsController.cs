@@ -79,23 +79,27 @@ namespace Skinet.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> Create(ProductToCreateOrUpdateDto productToCreateOrUpdateDto)
         {
             if (!ModelState.IsValid) return BadRequest(new ApiResponse(400));
+
+            var product = _mapper.Map<Product>(productToCreateOrUpdateDto);
 
             await _rep.Create(product);
 
-            return Ok();
+            return Ok(_mapper.Map<ProductToReturnDto>(product));
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(Product product)
+        public async Task<IActionResult> Update(ProductToCreateOrUpdateDto productToCreateOrUpdateDto)
         {
             if (!ModelState.IsValid) return BadRequest(new ApiResponse(400));
 
+            var product = _mapper.Map<Product>(productToCreateOrUpdateDto);
+
             await _rep.Update(product);
 
-            return Ok();
+            return Ok(_mapper.Map<ProductToReturnDto>(product));
         }
 
         [HttpDelete("{id}")]

@@ -9,6 +9,8 @@ namespace Skinet.Api.Helper
     {
         public MappingProfiles()
         {
+            CreateMap<Product, ProductToCreateOrUpdateDto>().ReverseMap();
+
             CreateMap<Product, ProductToReturnDto>()
             .ForMember(dest => dest.ProductBrand, opt => opt.MapFrom(src => src.ProductBrand.Name))
             .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.ProductType.Name))
@@ -23,7 +25,7 @@ namespace Skinet.Api.Helper
             CreateMap<Address, AddressDto>().ReverseMap();
 
             CreateMap<CustomerBasketDto, CustomerBasket>().ReverseMap();
-            
+
             CreateMap<BasketItemDto, BasketItem>().ReverseMap();
         }
     }
