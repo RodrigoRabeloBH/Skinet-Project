@@ -10,6 +10,7 @@ import { Product } from '../shared/Models/Product';
 @Injectable({
   providedIn: 'root'
 })
+
 export class BasketService {
 
   baseUrl = environment.apiUrl;
@@ -17,10 +18,11 @@ export class BasketService {
   private basketTotalSource = new BehaviorSubject<IBasketTotals>(null);
   basket$ = this.basketSource.asObservable();
   basketTotal$ = this.basketTotalSource.asObservable();
+  basket: IBasket;
 
   constructor(private http: HttpClient) { }
 
-  getBasket(id: string) {
+  getBasketRedis(id: string) {
 
     return this.http.get(this.baseUrl + 'baskets?id=' + id)
       .pipe(
@@ -31,7 +33,21 @@ export class BasketService {
       );
   }
 
-  setBasket(basket: IBasket) {
+  getBasketLoacalStorage() {
+
+    this.basket = JSON.parse(localStorage.getItem('basket'));
+    this.basketSource.next(this.basket);
+    return this.basket;
+  }
+
+  setBasketLocalStorage(basket: IBasket) {
+
+    localStorage.setItem('basket', JSON.stringify(basket));
+    this.basketSource.next(basket);
+    this.calculateTotals();
+  }
+
+  setBasketRedis(basket: IBasket) {
     return this.http.post(this.baseUrl + 'baskets', basket)
       .subscribe((res: IBasket) => {
         this.basketSource.next(res);
@@ -52,7 +68,7 @@ export class BasketService {
       basket = this.createBasket();
     }
     basket.items = this.addOrUpdateItem(basket.items, itemToAdd, quantity);
-    this.setBasket(basket);
+    this.setBasketLocalStorage(basket);
   }
 
   incrementItemQuantity(item: IBasketItem) {
@@ -60,7 +76,7 @@ export class BasketService {
     const basket = this.getCurrentBasketValue();
     const foundItemIndex = basket.items.findIndex(i => i.id === item.id);
     basket.items[foundItemIndex].quantity++;
-    this.setBasket(basket);
+    this.setBasketLocalStorage(basket);
 
   }
 
@@ -71,7 +87,7 @@ export class BasketService {
 
     if (basket.items[foundItemIndex].quantity > 1) {
       basket.items[foundItemIndex].quantity--;
-      this.setBasket(basket);
+      this.setBasketLocalStorage(basket);
 
     } else {
       this.removeItemFromBasket(item);
@@ -87,16 +103,15 @@ export class BasketService {
       basket.items = basket.items.filter(i => i.id !== item.id);
 
       if (basket.items.length > 0) {
-        this.setBasket(basket);
+        this.setBasketLocalStorage(basket);
       } else {
-        this.deleteBasket(basket);
+        this.deleteBasketLocalStore(basket);
       }
-
     }
   }
 
-  deleteBasket(basket: IBasket) {
-  
+  deleteBasketRedis(basket: IBasket) {
+
     return this.http.delete(this.baseUrl + 'baskets?id=' + basket.id).subscribe(() => {
 
       this.basketSource.next(null);
@@ -105,6 +120,14 @@ export class BasketService {
     }, error => {
       console.log(error);
     });
+  }
+
+  deleteBasketLocalStore(basket: IBasket) {
+
+    this.basketSource.next(null);
+    this.basketTotalSource.next(null);
+    localStorage.removeItem('basket');
+
   }
 
   private addOrUpdateItem(items: IBasketItem[], itemToAdd: IBasketItem, quantity: number): IBasketItem[] {
@@ -119,9 +142,17 @@ export class BasketService {
     return items;
   }
 
-  private createBasket(): IBasket {
+  private createBasketRedis(): IBasket {
+
     const basket = new Basket();
     localStorage.setItem('basket_id', basket.id);
+    return basket;
+  }
+
+  private createBasket(): IBasket {
+
+    const basket = new Basket();
+    localStorage.setItem('basket', JSON.stringify(basket));
     return basket;
   }
 
