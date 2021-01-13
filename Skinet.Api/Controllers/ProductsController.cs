@@ -24,10 +24,13 @@ namespace Skinet.Api.Controllers
             _rep = rep;
         }
 
-        [HttpGet("{index}/{length}/{sort}")]
-        public async Task<IActionResult> GetAll(int index, int length, string sort = null)
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll(int index, int length, string sort, int? brandId, int? typeId)
         {
-            var products = _mapper.Map<IEnumerable<ProductToReturnDto>>(await _rep.GetProducts(sort));
+            brandId = brandId == 0 ? null : brandId;
+            typeId = typeId == 0 ? null : typeId;
+            
+            var products = _mapper.Map<IEnumerable<ProductToReturnDto>>(await _rep.GetProductsByBrandAndTypes(brandId, typeId, sort));
 
             var result = new PaginationResponse<ProductToReturnDto>(products, index, length);
 
@@ -44,34 +47,14 @@ namespace Skinet.Api.Controllers
             return Ok(product);
         }
 
-        [HttpGet("name/{name}/{index}/{length}")]
-        public async Task<IActionResult> GetByName(string name, int index, int length)
+        [HttpGet("search")]
+        public async Task<IActionResult> GetByName(int index, int length, string search)
         {
-            name = name.ToLower();
+            search = search.ToLower();
 
-            name = Char.ToUpperInvariant(name[0]) + name.Substring(1);
+            search = Char.ToUpperInvariant(search[0]) + search.Substring(1);
 
-            var products = _mapper.Map<IEnumerable<ProductToReturnDto>>(await _rep.GetProductByName(name));
-
-            var result = new PaginationResponse<ProductToReturnDto>(products, index, length);
-
-            return Ok(result);
-        }
-
-        [HttpGet("productbrand/{brandId}/{index}/{length}")]
-        public async Task<IActionResult> GetProductsByBrand(int brandId, int index, int length, string sort = null)
-        {
-            var products = _mapper.Map<IEnumerable<ProductToReturnDto>>(await _rep.GetProductsByBrand(brandId, sort));
-
-            var result = new PaginationResponse<ProductToReturnDto>(products, index, length);
-
-            return Ok(result);
-        }
-
-        [HttpGet("producttype/{typeId}/{index}/{length}")]
-        public async Task<IActionResult> GetProductsByType(int typeId, int index, int length, string sort = null)
-        {
-            var products = _mapper.Map<IEnumerable<ProductToReturnDto>>(await _rep.GetProductsByType(typeId, sort));
+            var products = _mapper.Map<IEnumerable<ProductToReturnDto>>(await _rep.GetProductByName(search));
 
             var result = new PaginationResponse<ProductToReturnDto>(products, index, length);
 

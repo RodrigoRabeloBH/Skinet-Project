@@ -15,7 +15,7 @@ export class ShopComponent implements OnInit {
   productTypes: ProductType[];
   index = 1;
   length = 8;
-  name: string;
+  search: string;
   total: number;
   totalPage: number;
   currentPage: number;
@@ -31,7 +31,8 @@ export class ShopComponent implements OnInit {
   }
 
   getProducts() {
-    this.service.getProducts(this.index, this.length, null)
+
+    this.service.getProducts(this.index, this.length, 'priceAsc', this.brandIdSelected, this.typeIdSelected)
       .subscribe(res => {
         this.products = res.data;
         this.total = res.total;
@@ -42,40 +43,36 @@ export class ShopComponent implements OnInit {
   }
 
   getBrands() {
+
     this.service.getBrands()
       .subscribe(res => {
         this.brands = res;
       }, err => console.log(err));
   }
+
   getTypes() {
+
     this.service.getTypes()
       .subscribe(res => {
         this.productTypes = res;
       }, err => console.log(err));
   }
-  getProductsByTypeId(id: number) {
-    this.service.getProductsByType(id, this.index, this.length)
-      .subscribe(res => {
-        this.products = res.data;
-        this.total = res.total;
-        this.totalPage = res.totalPage * 10;
-        this.typeIdSelected = id;
-        this.brandIdSelected = 0;
-      }, error => console.log(error));
-  }
-  getProductsByBrandId(id: number) {
-    this.service.getProductsByBrandId(id, this.index, this.length)
-      .subscribe(res => {
-        this.products = res.data;
-        this.total = res.total;
-        this.totalPage = res.totalPage * 10;
-        this.brandIdSelected = id;
-        this.typeIdSelected = 0;
 
-      }, error => console.log(error));
+  getProductsByTypeId(id: number) {
+
+    this.typeIdSelected = id;
+    this.getProducts();
   }
+
+  getProductsByBrandId(id: number) {
+
+    this.brandIdSelected = id;
+    this.getProducts();
+  }
+
   getProductsByName(name: string) {
-    this.service.getProductsByName(name, this.index, this.length)
+
+    this.service.getProductsBySearch(name, this.index, this.length)
       .subscribe(res => {
         this.products = res.data;
         this.total = res.total;
@@ -84,17 +81,27 @@ export class ShopComponent implements OnInit {
   }
 
   clearSearch() {
-    this.getProducts();
-    this.brandIdSelected = 0;
-    this.typeIdSelected = 0;  
-  }
-  onclick() {
-    this.getProducts();
+    
+    this.search = null;
     this.brandIdSelected = 0;
     this.typeIdSelected = 0;
+    this.getProducts();
+  }
+
+  clearType() {
+
+    this.typeIdSelected = 0;
+    this.getProducts();
+  }
+
+  clearBrand() {
+
+    this.brandIdSelected = 0;
+    this.getProducts();
   }
 
   pageChanged(event: any): void {
+
     this.index = event.page;
     this.getProducts();
   }

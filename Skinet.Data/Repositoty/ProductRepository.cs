@@ -10,73 +10,90 @@ namespace Skinet.Data.Repositoty
     public class ProductRepository : SkinetRepository<Product>, IProductRepository
     {
         public ProductRepository(SkinetContext context) : base(context) { }
-
-        public async Task<IEnumerable<Product>> GetProducts(string sort)
-        {
-            var products = new List<Product>();
-
-            switch (sort)
-            {
-                case "priceAsc":
-                    products = await _context.Product
-                        .AsNoTracking()
-                        .Include(p => p.ProductBrand)
-                        .Include(p => p.ProductType)
-                        .Include(p => p.TierPrice)
-                        .OrderBy(p => p.Price)
-                        .ToListAsync();
-                    break;
-
-                case "priceDesc":
-                    products = await _context.Product
-                       .AsNoTracking()
-                       .Include(p => p.ProductBrand)
-                       .Include(p => p.ProductType)
-                       .Include(p => p.TierPrice)
-                       .OrderByDescending(p => p.Price)
-                       .ToListAsync();
-                    break;
-
-                default:
-                    products = await _context.Product
-                       .AsNoTracking()
-                       .Include(p => p.ProductBrand)
-                       .Include(p => p.ProductType)
-                       .Include(p => p.TierPrice)
-                       .OrderBy(p => p.Name)
-                       .ToListAsync();
-                    break;
-            }
-            return products;
-        }
-
         public async Task<Product> GetProductById(int id)
         {
-            var products = await GetProducts(null);
-
-            return products.FirstOrDefault(p => p.Id == id);
+            return await _context.Product
+                    .Include(p => p.ProductBrand)
+                    .Include(p => p.ProductType)
+                    .Include(p => p.TierPrice)
+                    .FirstAsync(p => p.Id == id);
         }
-
-        public async Task<IEnumerable<Product>> GetProductByName(string name)
+        public async Task<IEnumerable<Product>> GetProductByName(string search)
         {
-            var products = await GetProducts(null);
-
-            return products.Where(p => p.Name.Contains(name));
+            return await _context.Product
+                    .Include(p => p.ProductBrand)
+                    .Include(p => p.ProductType)
+                    .Include(p => p.TierPrice)
+                    .Where(p => p.Name.Contains(search))
+                    .ToListAsync();
         }
-
-        public async Task<IEnumerable<Product>> GetProductsByBrand(int brandId, string sort)
+        public async Task<IEnumerable<Product>> GetProductsByBrandAndTypes(int? brandId, int? typeId, string sort)
         {
-            var products = await GetProducts(sort);
+            if (brandId.HasValue && typeId.HasValue)
+            {
+                return await _context.Product
+                    .Include(p => p.ProductBrand)
+                    .Include(p => p.ProductType)
+                    .Include(p => p.TierPrice)
+                    .Where(p => p.ProductBrandId == brandId && p.ProductTypeId == typeId)
+                    .ToListAsync();
+            }
+            else if (brandId.HasValue && !typeId.HasValue)
+            {
+                return await _context.Product
+                    .Include(p => p.ProductBrand)
+                    .Include(p => p.ProductType)
+                    .Include(p => p.TierPrice)
+                    .Where(p => p.ProductBrandId == brandId)
+                    .ToListAsync();
+            }
+            else if (!brandId.HasValue && typeId.HasValue)
+            {
+                return await _context.Product
+                    .Include(p => p.ProductBrand)
+                    .Include(p => p.ProductType)
+                    .Include(p => p.TierPrice)
+                    .Where(p => p.ProductTypeId == typeId)
+                    .ToListAsync();
+            }
+            else
+            {
+                var products = new List<Product>();
 
-            return products.Where(p => p.ProductBrandId == brandId);
+                switch (sort)
+                {
+                    case "priceAsc":
+                        products = await _context.Product
+                            .AsNoTracking()
+                            .Include(p => p.ProductBrand)
+                            .Include(p => p.ProductType)
+                            .Include(p => p.TierPrice)
+                            .OrderBy(p => p.Price)
+                            .ToListAsync();
+                        break;
+
+                    case "priceDesc":
+                        products = await _context.Product
+                           .AsNoTracking()
+                           .Include(p => p.ProductBrand)
+                           .Include(p => p.ProductType)
+                           .Include(p => p.TierPrice)
+                           .OrderByDescending(p => p.Price)
+                           .ToListAsync();
+                        break;
+
+                    default:
+                        products = await _context.Product
+                           .AsNoTracking()
+                           .Include(p => p.ProductBrand)
+                           .Include(p => p.ProductType)
+                           .Include(p => p.TierPrice)
+                           .OrderBy(p => p.Name)
+                           .ToListAsync();
+                        break;
+                }
+                return products;
+            }
         }
-
-        public async Task<IEnumerable<Product>> GetProductsByType(int typeId, string sort)
-        {
-            var products = await GetProducts(sort);
-
-            return products.Where(p => p.ProductTypeId == typeId);
-        }
-
     }
 }

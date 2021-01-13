@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   }
 
   getProducts() {
-    this.service.getProducts(this.index, this.length, null)
+    this.service.getProducts(this.index, this.length, 'priceAsc', 0, 0)
       .subscribe(res => {
         this.products = res.data;
       }, err => {

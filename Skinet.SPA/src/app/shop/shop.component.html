@@ -3,22 +3,22 @@
     <section class="col-sm-3 col-md-2">
       <h5 class="text-warning mt-3">Brands</h5>
       <ul class="list-group my-3">
-        <li class="list-group-item" (click)="onclick()" [class.active]="brandIdSelected === 0">
+        <li class="list-group-item" (click)="clearBrand()" [class.active]="brandIdSelected === 0">
           All
         </li>
         <li class="list-group-item" *ngFor="let brand of brands" [class.active]="brand.id === brandIdSelected"
-          (click)="getProductsByBrandId(brand.id)">
+          [value]="brand.id" (click)="getProductsByBrandId(brand.id)">
           {{brand.name}}
         </li>
       </ul>
       <h5 class="text-warning">Types</h5>
       <ul class="list-group my-3">
-        <li class="list-group-item" (click)="onclick()" [class.active]="typeIdSelected === 0">
+        <li class="list-group-item" (click)="clearType()" [class.active]="typeIdSelected === 0">
           All
         </li>
-        <li class="list-group-item" *ngFor="let item of productTypes" [class.active]="item.id === typeIdSelected"
-          (click)="getProductsByTypeId(item.id)">
-          {{item.name}}
+        <li class="list-group-item" *ngFor="let type of productTypes" [class.active]="type.id === typeIdSelected"
+          [value]="type.id" (click)="getProductsByTypeId(type.id)">
+          {{type.name}}
         </li>
       </ul>
     </section>
@@ -28,9 +28,9 @@
           <span>Total of Results <strong>{{total}}</strong></span>
         </header>
         <form class="form-inline mt-2" #searchForm="ngForm">
-          <input type="text" class="form-control form-control-sm" name="name" [(ngModel)]="name" style="width: 500px;"
+          <input type="text" class="form-control form-control-sm" name="search" [(ngModel)]="search" style="width: 500px;"
             placeholder="Search" value="">
-          <button class="btn btn-sm btn-outline-secondary my-2 mx-1" (click)="getProductsByName(name)">Search</button>
+          <button class="btn btn-sm btn-outline-secondary my-2 mx-1" (click)="getProductsByName(search)">Search</button>
           <button class="btn btn-sm btn-outline-secondary my-2 mx-1" (click)="clearSearch()">Reset</button>
         </form>
       </div>
