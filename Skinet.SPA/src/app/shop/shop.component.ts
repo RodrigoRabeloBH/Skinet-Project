@@ -21,6 +21,12 @@ export class ShopComponent implements OnInit {
   currentPage: number;
   brandIdSelected = 0;
   typeIdSelected = 0;
+  sortSelected = 'name';
+  sortOptions = [
+    { name: 'Alphabetical', value: 'name' },
+    { name: 'Price Low to High', value: 'priceAsc' },
+    { name: 'Price High to Low', value: 'priceDesc' }
+  ];
 
   constructor(private service: ShopService) { }
 
@@ -30,9 +36,14 @@ export class ShopComponent implements OnInit {
     this.getTypes();
   }
 
+  onSortSelected(sort: string) {
+    this.sortSelected = sort;
+    this.getProducts();
+  }
+
   getProducts() {
 
-    this.service.getProducts(this.index, this.length, 'priceAsc', this.brandIdSelected, this.typeIdSelected)
+    this.service.getProducts(this.index, this.length, this.sortSelected, this.brandIdSelected, this.typeIdSelected)
       .subscribe(res => {
         this.products = res.data;
         this.total = res.total;
@@ -60,12 +71,14 @@ export class ShopComponent implements OnInit {
 
   getProductsByTypeId(id: number) {
 
+    this.sortSelected = null;
     this.typeIdSelected = id;
     this.getProducts();
   }
 
   getProductsByBrandId(id: number) {
 
+    this.sortSelected = null;
     this.brandIdSelected = id;
     this.getProducts();
   }
@@ -81,7 +94,7 @@ export class ShopComponent implements OnInit {
   }
 
   clearSearch() {
-    
+
     this.search = null;
     this.brandIdSelected = 0;
     this.typeIdSelected = 0;

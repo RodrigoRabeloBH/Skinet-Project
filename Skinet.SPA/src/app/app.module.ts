@@ -21,7 +21,8 @@ import { FooterComponent } from './core/footer/footer.component';
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule,
-    HomeModule    
+    HomeModule
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }

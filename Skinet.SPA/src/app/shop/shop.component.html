@@ -1,6 +1,12 @@
 <div class="container-fluid">
   <div class="row mt-3">
     <section class="col-sm-3 col-md-2">
+      <h5 class="text-warning">Sort</h5>
+      <select class="custom-select" (change)="onSortSelected($event.target.value)">
+        <option *ngFor="let sort of sortOptions" [value]="sort.value">
+          {{sort.name}}
+        </option>
+      </select>
       <h5 class="text-warning mt-3">Brands</h5>
       <ul class="list-group my-3">
         <li class="list-group-item" (click)="clearBrand()" [class.active]="brandIdSelected === 0">
@@ -28,8 +34,8 @@
           <span>Total of Results <strong>{{total}}</strong></span>
         </header>
         <form class="form-inline mt-2" #searchForm="ngForm">
-          <input type="text" class="form-control form-control-sm" name="search" [(ngModel)]="search" style="width: 500px;"
-            placeholder="Search" value="">
+          <input type="text" class="form-control form-control-sm" name="search" [(ngModel)]="search"
+            style="width: 500px;" placeholder="Search" value="">
           <button class="btn btn-sm btn-outline-secondary my-2 mx-1" (click)="getProductsByName(search)">Search</button>
           <button class="btn btn-sm btn-outline-secondary my-2 mx-1" (click)="clearSearch()">Reset</button>
         </form>

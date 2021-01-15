@@ -40,6 +40,24 @@ namespace Skinet.Api
                 op.UseSqlite(Configuration.GetConnectionString("ItentityConnection"));
             });
 
+            services.Configure<ApiBehaviorOptions>(op =>
+            {
+                op.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState.Where(e => e.Value.Errors.Count > 0)
+                                                         .SelectMany(x => x.Value.Errors)
+                                                         .Select(x => x.ErrorMessage)
+                                                         .ToArray();
+
+                    var errorResponse = new ApiValidationErrorResponse
+                    {
+                        Errors = errors
+                    };
+
+                    return new BadRequestObjectResult(errorResponse);
+                };
+            });
+
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {
                 var config = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis"), true);

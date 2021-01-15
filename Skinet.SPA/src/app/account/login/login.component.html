@@ -4,17 +4,11 @@
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Login</h1>
       </div>
-
-      <div class="form-label-group">
-        <label for="inputEmail">Email</label>
-        <input type="email" id="inputEmail" class="form-control" formControlName="email">
+      <div>
+        <app-text-input formControlName="email" [label]="'Email'"></app-text-input>
+        <app-text-input formControlName="password" [label]="'Password'" [type]="'password'"></app-text-input>
       </div>
-
-      <div class="form-label-group">
-        <label for="inputPassword">Password</label>
-        <input type="password" id="inputPassword" class="form-control" formControlName="password">
-      </div>
-      <button class="btn btn-primary btn-block my-3" type="submit">Login</button>
+      <button [disabled]="loginForm.invalid" class="btn btn-primary btn-block my-3" type="submit">Login</button>
     </form>
   </div>
 </div>
