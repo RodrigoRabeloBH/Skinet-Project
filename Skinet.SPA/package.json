@@ -24,6 +24,7 @@
     "bootswatch": "^4.4.1",
     "font-awesome": "^4.7.0",
     "ngx-bootstrap": "^5.5.0",
+    "ngx-spinner": "^8.1.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "uuid": "^3.4.0",
