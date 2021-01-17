@@ -16,7 +16,7 @@ namespace Skinet.Data.Repositoty
                     .Include(p => p.ProductBrand)
                     .Include(p => p.ProductType)
                     .Include(p => p.TierPrice)
-                    .FirstAsync(p => p.Id == id);
+                    .FirstOrDefaultAsync(p => p.Id == id);
         }
         public async Task<IEnumerable<Product>> GetProductByName(string search)
         {
