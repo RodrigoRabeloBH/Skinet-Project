@@ -1,0 +1,14 @@
+<div class="mt-4 card p-3" [formGroup]="checkoutForm">
+  <div class="row ml-2" formGroupName="deliveryForm">
+    <div class="col-md-6 col-sm-12 form-group" *ngFor="let method of deliveryMethods">
+      <input type="radio" id="{{method.id}}" value="{{method.id}}" formControlName="deliveryMethod"
+        class="custom-control-input ml-4">
+      <label for="{{method.id}}" class="custom-control-label">
+        <strong>{{method.shortName}} - {{method.price | currency}}</strong>
+        <br>
+        <span class="label-description">{{method.description}}</span>
+        <span class="label-description">{{method.delivaryTime}}</span>
+      </label>
+    </div>
+  </div>
+</div>

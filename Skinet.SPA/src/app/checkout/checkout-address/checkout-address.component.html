@@ -1,0 +1,36 @@
+<div class="mt-4 card p-3" [formGroup]="checkoutForm">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>Shipping Address</h4>
+    <button class="btn btn-primary btn-sm" [disabled]="checkoutForm.get('addressForm').invalid">Save as default address</button>
+  </div>
+  <div class="row" formGroupName="addressForm">
+
+    <div class="form-group col-md-6 col-sm-12">
+      <app-text-input formControlName="firstName" [label]="'First Name'"></app-text-input>
+    </div>
+    <div class="form-group col-md-6 col-sm-12">
+      <app-text-input formControlName="lastName" [label]="'Last Name'"></app-text-input>
+    </div>
+    <div class="form-group col-md-3 col-sm-12">
+      <label for="zipcode">Zip Code</label>
+      <input type="text" class="form-control" formControlName="zipcode" id="zipcode"
+        (blur)="getAddresViaCep($event.target.value)">
+    </div>
+    <div class="form-group col-md-6 col-sm-12">
+      <app-text-input formControlName="street" [label]="'Street'"></app-text-input>
+    </div>
+    <div class="form-group col-md-3 col-sm-12">
+      <app-text-input formControlName="number" [label]="'Number'"></app-text-input>
+    </div>
+    <div class="form-group col-md-5 col-sm-12">
+      <app-text-input formControlName="district" [label]="'Bairro'"></app-text-input>
+    </div>
+    <div class="form-group col-md-5 col-sm-12">
+      <app-text-input formControlName="city" [label]="'City'"></app-text-input>
+    </div>
+    <div class="form-group col-md-2 col-sm-12">
+      <app-text-input formControlName="state" [label]="'State'"></app-text-input>
+    </div>
+  </div>
+</div>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Skinet.Data;
 
 namespace Skinet.Data.Migrations
 {
     [DbContext(typeof(SkinetContext))]
-    partial class SkinetContextModelSnapshot : ModelSnapshot
+    [Migration("20210117230453_AddedNewColumnForAddress")]
+    partial class AddedNewColumnForAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

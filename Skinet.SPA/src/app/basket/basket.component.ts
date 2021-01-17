@@ -30,18 +30,4 @@ export class BasketComponent implements OnInit {
   decrementItemQuantity(item: IBasketItem) {
     this.basketService.decrementItemQuantity(item);
   }
-
-  totalItem(item: IBasketItem) {
-    if (item.tierPriceId === 2 && item.quantity % 2 === 0) {
-
-      return item.price * item.quantity * item.percent;
-
-    } else if (item.tierPriceId === 1 && item.quantity % 3 === 0) {
-
-      return 10 * item.quantity * item.percent
-
-    } else {
-      return item.price * item.quantity;
-    }
-  }
 }
