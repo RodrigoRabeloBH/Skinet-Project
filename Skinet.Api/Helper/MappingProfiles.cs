@@ -30,6 +30,9 @@ namespace Skinet.Api.Helper
             CreateMap<BasketItemDto, BasketItem>().ReverseMap();
 
             CreateMap<AddressDto, ShippingAddress>().ReverseMap();
+
+            CreateMap<Order, OrderToReturnDto>().ReverseMap();
+            CreateMap<OrderItem, OrderItemDto>().ReverseMap();
         }
     }
 }

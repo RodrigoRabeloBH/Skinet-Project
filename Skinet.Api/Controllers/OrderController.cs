@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -24,17 +26,50 @@ namespace Skinet.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Order>> CreateOrder(OrderDto orderDto)
+        public async Task<ActionResult<OrderToReturnDto>> CreateOrder(OrderDto orderDto)
         {
-            var email = HttpContext.User.RetrieveEmailFromPrincipal();
+            string email = HttpContext.User.RetrieveEmailFromPrincipal();
+
+            string customerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var shippingAddress = _map.Map<AddressDto, ShippingAddress>(orderDto.ShippingAddres);
 
-            var order = await _rep.CreateOrder(email, orderDto.DeliveryMethodId, orderDto.BasketId, shippingAddress);
+            var order = await _rep.CreateOrder(customerId, email, orderDto.DeliveryMethodId, orderDto.BasketId, shippingAddress);
 
             if (order == null) return BadRequest(new ApiResponse(400, "Problem creating order."));
 
-            return Ok(order);
+            return Ok(_map.Map<OrderToReturnDto>(order));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<OrderToReturnDto>> GetById(int id)
+        {
+            string email = HttpContext.User.RetrieveEmailFromPrincipal();
+
+            Order order = await _rep.GetOrderById(id, email);
+
+            return Ok(_map.Map<OrderToReturnDto>(order));
+        }
+
+        [HttpGet("deliverymethods")]
+        public async Task<ActionResult<List<DeliveryMethod>>> GetDeliveryMethods()
+        {
+
+            var deliverymethods = await _rep.GetDeliveryMethods();
+
+            return Ok(deliverymethods);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<OrderToReturnDto>>> GetOrdersForUser()
+        {
+            string email = HttpContext.User.RetrieveEmailFromPrincipal();
+
+            string customerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var orders = await _rep.GetOrdersForUser(email, customerId);
+
+            return Ok(_map.Map<List<OrderToReturnDto>>(orders));
         }
     }
 }

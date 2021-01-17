@@ -8,8 +8,10 @@ namespace Skinet.Model.OrderAggregate
         public string BuyerEmail { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public decimal Subtotal { get; set; }
+        public decimal Total { get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         public string PaymentIntentId { get; set; }
+        public string CustomerId { get; set; }
 
         // EF Relation 
         public virtual List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
@@ -19,17 +21,14 @@ namespace Skinet.Model.OrderAggregate
         public int ShippingAddressId { get; set; }
         public Order() { }
 
-        public Order(List<OrderItem> orderItems, string buyerEmail, ShippingAddress shippingAddress, int deliveryMethodId, decimal subtotal)
+        public Order(List<OrderItem> orderItems, string buyerEmail, ShippingAddress shippingAddress, int deliveryMethodId, decimal subtotal, string customerId)
         {
             BuyerEmail = buyerEmail;
             ShippingAddress = shippingAddress;
             OrderItems = orderItems;
             Subtotal = subtotal;
             DeliveryMethodId = deliveryMethodId;
-        }
-        public decimal GetTotal()
-        {
-            return Subtotal + DeliveryMethod.Price;
+            CustomerId = customerId;
         }
     }
 }

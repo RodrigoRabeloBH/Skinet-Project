@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Skinet.Model.OrderAggregate;
 using Skinet.Service.Interfaces;
 
@@ -26,7 +27,7 @@ namespace Skinet.Data.Repositoty
             _shippingRepo = shippingRepo;
         }
 
-        public async Task<Order> CreateOrder(string buyerEmail, int deliveryMethodId, string basketId, ShippingAddress shippingAddress)
+        public async Task<Order> CreateOrder(string customerId, string buyerEmail, int deliveryMethodId, string basketId, ShippingAddress shippingAddress)
         {
             try
             {
@@ -38,7 +39,7 @@ namespace Skinet.Data.Repositoty
                 {
                     var productItem = await _productRepo.GetById(item.Id);
 
-                    var orderItem = new OrderItem(productItem.Price, item.Quantity, item.Id, productItem.Name, productItem.ImageUrl);
+                    var orderItem = new OrderItem(productItem.Price, item.Quantity, item.Id, productItem.Name, item.ImageUrl);
 
                     items.Add(orderItem);
                 }
@@ -47,7 +48,9 @@ namespace Skinet.Data.Repositoty
 
                 var subtotal = items.Sum(i => i.Price * i.Quantity);
 
-                var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod.Id, subtotal);
+                var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod.Id, subtotal, customerId);
+
+                order.Total = subtotal + deliveryMethod.Price;
 
                 await _context.Orders.AddAsync(order);
 
@@ -56,6 +59,7 @@ namespace Skinet.Data.Repositoty
                 await _basketRepo.DeleteBasket(basketId);
 
                 order.DeliveryMethod = deliveryMethod;
+
 
                 return order;
             }
@@ -66,19 +70,30 @@ namespace Skinet.Data.Repositoty
 
         }
 
-        public Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethods()
+        public async Task<IEnumerable<DeliveryMethod>> GetDeliveryMethods()
         {
-            throw new System.NotImplementedException();
+            return await _deliveryRepo.GetAll();
         }
 
-        public Task<Order> GetOrderById(int id, string buyerEmail)
+        public async Task<Order> GetOrderById(int id, string buyerEmail)
         {
-            throw new System.NotImplementedException();
+            return await _context.Orders
+                .AsNoTracking()
+                .Include(o => o.DeliveryMethod)
+                .Include(o => o.ShippingAddress)
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.Id == id && o.BuyerEmail == buyerEmail);
         }
 
-        public Task<IReadOnlyList<Order>> GetOrdersForUser(string buyerEmail)
+        public async Task<IEnumerable<Order>> GetOrdersForUser(string buyerEmail, string customerId)
         {
-            throw new System.NotImplementedException();
+            return await _context.Orders
+                 .AsNoTracking()
+                 .Include(o => o.DeliveryMethod)
+                 .Include(o => o.ShippingAddress)
+                 .Include(o => o.OrderItems)
+                 .Where(o => o.BuyerEmail == buyerEmail && o.CustomerId == customerId)
+                 .ToListAsync();
         }
     }
 }

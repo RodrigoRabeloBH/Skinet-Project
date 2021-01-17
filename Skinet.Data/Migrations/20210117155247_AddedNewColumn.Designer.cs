@@ -10,8 +10,8 @@ using Skinet.Data;
 namespace Skinet.Data.Migrations
 {
     [DbContext(typeof(SkinetContext))]
-    [Migration("20210117013804_ChangeColummType")]
-    partial class ChangeColummType
+    [Migration("20210117155247_AddedNewColumn")]
+    partial class AddedNewColumn
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,9 @@ namespace Skinet.Data.Migrations
                     b.Property<string>("BuyerEmail")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DeliveryMethodId")
                         .HasColumnType("int");
 
@@ -72,6 +75,9 @@ namespace Skinet.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");

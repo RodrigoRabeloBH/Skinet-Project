@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Skinet.Data.Migrations
 {
-    public partial class ChangeColummType : Migration
+    public partial class AddedNewEntities : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -93,6 +93,7 @@ namespace Skinet.Data.Migrations
                     Subtotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<string>(nullable: false),
                     PaymentIntentId = table.Column<string>(nullable: true),
+                    CustomerId = table.Column<int>(nullable: false),
                     DeliveryMethodId = table.Column<int>(nullable: false),
                     ShippingAddressId = table.Column<int>(nullable: false)
                 },

@@ -6,7 +6,7 @@
     "ImageUrl": "images/products/sb-ang1.png",
     "ProductTypeId": 4,
     "ProductBrandId": 1,
-    "TierPriceId": 3
+    "TierPriceId": 2
   },
   {
     "Name": "Green Angular Board 3000",
@@ -15,7 +15,7 @@
     "ImageUrl": "images/products/sb-ang2.png",
     "ProductTypeId": 4,
     "ProductBrandId": 1,
-    "TierPriceId": 4
+    "TierPriceId": 1
   },
   {
     "Name": "Core Board Speed Rush 3",
@@ -24,7 +24,7 @@
     "ImageUrl": "images/products/sb-core1.png",
     "ProductTypeId": 4,
     "ProductBrandId": 2,
-    "TierPriceId": 3
+    "TierPriceId": 2
   },
   {
     "Name": "Net Core Super Board",
@@ -33,7 +33,7 @@
     "ImageUrl": "images/products/sb-core2.png",
     "ProductTypeId": 4,
     "ProductBrandId": 2,
-    "TierPriceId": 4
+    "TierPriceId": 1
   },
   {
     "Name": "React Board Super Whizzy Fast",
@@ -42,7 +42,7 @@
     "ImageUrl": "images/products/sb-react1.png",
     "ProductTypeId": 4,
     "ProductBrandId": 4,
-    "TierPriceId": 4
+    "TierPriceId": 1
   },
   {
     "Name": "Typescript Entry Board",
@@ -51,7 +51,7 @@
     "ImageUrl": "images/products/sb-ts1.png",
     "ProductTypeId": 4,
     "ProductBrandId": 5,
-    "TierPriceId": 3
+    "TierPriceId": 2
   },
   {
     "Name": "Core Blue Hat",
@@ -60,7 +60,7 @@
     "ImageUrl": "images/products/hat-core1.png",
     "ProductTypeId": 3,
     "ProductBrandId": 2,
-    "TierPriceId": 4
+    "TierPriceId": 1
   },
   {
     "Name": "Green React Woolen Hat",
@@ -69,7 +69,7 @@
     "ImageUrl": "images/products/hat-react1.png",
     "ProductTypeId": 3,
     "ProductBrandId": 4,
-    "TierPriceId": 3
+    "TierPriceId": 2
   },
   {
     "Name": "Purple React Woolen Hat",
@@ -78,7 +78,7 @@
     "ImageUrl": "images/products/hat-react2.png",
     "ProductTypeId": 3,
     "ProductBrandId": 4,
-    "TierPriceId": 4
+    "TierPriceId": 1
   },
   {
     "Name": "Blue Code Gloves",

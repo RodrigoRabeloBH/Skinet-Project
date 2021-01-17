@@ -85,9 +85,11 @@ namespace Skinet.Api.Controllers
 
             return new UserDto
             {
+                Id = user.Id,
                 Email = user.Email,
                 Token = _tokenServices.CreateToken(user),
                 DisplayName = user.DisplayName
+
             };
         }
 
@@ -98,7 +100,7 @@ namespace Skinet.Api.Controllers
             {
                 return BadRequest("Email address is in use");
             }
-            
+
             var user = new AppUser
             {
                 DisplayName = registerDto.DisplayName,

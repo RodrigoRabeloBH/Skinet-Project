@@ -26,7 +26,8 @@ namespace Skinet.Data
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.DisplayName)
+                new Claim(JwtRegisteredClaimNames.GivenName, user.DisplayName),
+                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString() )
             };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
