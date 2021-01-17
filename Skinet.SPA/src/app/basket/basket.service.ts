@@ -113,9 +113,9 @@ export class BasketService {
     const index = items.findIndex(i => i.id === itemToAdd.id)
     if (index === -1) {
       itemToAdd.quantity = quantity;
-      items.push(itemToAdd);
+      items.push(itemToAdd);      
     } else {
-      items[index].quantity += quantity;
+      items[index].quantity += quantity;   
     }
     return items;
   }
@@ -149,11 +149,11 @@ export class BasketService {
     let total = 0;
 
     basket.items.forEach((item) => {
-      if (item.tierPriceId === 1 && item.quantity % 2 === 0) {
+      if (item.tierPriceId === 3 && item.quantity % 2 === 0) {
 
         total += item.price * item.quantity * item.percent;
 
-      } else if (item.tierPriceId === 2 && item.quantity % 3 === 0) {
+      } else if (item.tierPriceId === 4 && item.quantity % 3 === 0) {
 
         total += 10 * item.quantity * item.percent
 
