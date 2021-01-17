@@ -70,10 +70,10 @@ export class ShopComponent implements OnInit {
   }
 
   getProductsByTypeId(id: number) {
-
+  
     this.sortSelected = null;
     this.typeIdSelected = id;
-    this.getProducts();
+    this.getProducts(); 
   }
 
   getProductsByBrandId(id: number) {

@@ -10,13 +10,14 @@ import { IBasket } from './shared/Models/Basket';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-basket:IBasket
+  basket: IBasket
 
   constructor(private basketService: BasketService, private accountService: AccountService) { }
 
   ngOnInit(): void {
 
-    this.loadbasketLocalStorage();
+    // this.loadbasketLocalStorage();
+    this.loadbasket();
     this.loadCurrentUser();
   }
 
@@ -32,21 +33,20 @@ basket:IBasket
 
   loadbasketLocalStorage() {
 
-    const basket = localStorage.getItem('basket');   
+    const basket = localStorage.getItem('basket');
     if (basket) {
       this.basketService.getBasketLoacalStorage();
     }
   }
 
   loadCurrentUser() {
+
     const token = localStorage.getItem('token');
-    if (token) {
-      this.accountService.loadCurrentUser(token)
-        .subscribe(() => {
-          console.log('loaded user');
-        }, error => {
-          console.log(error);
-        })
-    }
+    this.accountService.loadCurrentUser(token)
+      .subscribe(() => {
+        console.log('loaded user');
+      }, error => {
+        console.log(error);
+      });
   }
 }

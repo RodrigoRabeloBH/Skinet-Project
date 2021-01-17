@@ -1,21 +1,14 @@
-using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using Skinet.Api.Errors;
 using Skinet.Api.Extensions;
 using Skinet.Api.Helper;
 using Skinet.Api.Middleware;
 using Skinet.Data;
 using Skinet.Data.Identity;
-using Skinet.Data.Repositoty;
-using Skinet.Service.Interfaces;
-using StackExchange.Redis;
 
 namespace Skinet.Api
 {
@@ -33,51 +26,21 @@ namespace Skinet.Api
 
             services.AddAutoMapper(typeof(MappingProfiles));
 
-            services.AddDbContext<SkinetContext>();
+            services.AddDbContext<SkinetContext>(op =>
+            {
+                op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddDbContext<AppIdentityContext>(op =>
             {
-                op.UseSqlite(Configuration.GetConnectionString("ItentityConnection"));
+                op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-
-            services.Configure<ApiBehaviorOptions>(op =>
-            {
-                op.InvalidModelStateResponseFactory = actionContext =>
-                {
-                    var errors = actionContext.ModelState.Where(e => e.Value.Errors.Count > 0)
-                                                         .SelectMany(x => x.Value.Errors)
-                                                         .Select(x => x.ErrorMessage)
-                                                         .ToArray();
-
-                    var errorResponse = new ApiValidationErrorResponse
-                    {
-                        Errors = errors
-                    };
-
-                    return new BadRequestObjectResult(errorResponse);
-                };
-            });
-
-            services.AddSingleton<IConnectionMultiplexer>(c =>
-            {
-                var config = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis"), true);
-
-                return ConnectionMultiplexer.Connect(config);
-            });
-
-            services.AddScoped<IProductRepository, ProductRepository>();
-
-            services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
-
-            services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
-
-            services.AddScoped<ITierPriceRepository, TierPriceRepository>();
-
-            services.AddScoped<IBasketRepository, BasketRepository>();
-
-            services.AddScoped<ITokenServices, TokenService>();
 
             services.AddIdentityServices(Configuration);
+
+            services.AddApplicationServices(Configuration);
+
+            services.AddSwaggerDocumentation();
 
             services.AddCors(option =>
             {
@@ -87,50 +50,6 @@ namespace Skinet.Api
                 });
             });
 
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.InvalidModelStateResponseFactory = actionContext =>
-                {
-                    var errors = actionContext.ModelState
-                        .Where(e => e.Value.Errors.Count > 0)
-                        .SelectMany(x => x.Value.Errors)
-                        .Select(x => x.ErrorMessage).ToArray();
-
-                    var errorResponse = new ApiValidationResponse
-                    {
-                        Errors = errors
-                    };
-                    return new BadRequestObjectResult(errorResponse);
-                };
-            });
-
-            services.AddSwaggerGen(c =>
-             {
-                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Skinet API", Version = "v1" });
-
-                 var securitySchema = new OpenApiSecurityScheme
-                 {
-                     Description = "JWT Auth Bearer Scheme",
-                     Name = "Authorization",
-                     In = ParameterLocation.Header,
-                     Type = SecuritySchemeType.Http,
-                     Scheme = "bearer",
-                     Reference = new OpenApiReference
-                     {
-                         Type = ReferenceType.SecurityScheme,
-                         Id = "Bearer"
-                     }
-                 };
-
-                 c.AddSecurityDefinition("Bearer", securitySchema);
-
-                 var securityRequirement = new OpenApiSecurityRequirement
-                 {
-                     { securitySchema, new [] {"Bearer"}}
-                 };
-
-                 c.AddSecurityRequirement(securityRequirement);
-             });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -150,10 +69,7 @@ namespace Skinet.Api
 
             app.UseAuthorization();
 
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-                { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Skinet API v1"); });
+            app.UseSwaggerDocumentation();
 
             app.UseEndpoints(endpoints =>
             {

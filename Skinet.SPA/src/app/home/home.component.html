@@ -1,67 +1,75 @@
-<div class="">
-  <carousel [(activeSlide)]="activeSlideIndex">
-    <slide>
-      <img class="banner" src="assets/images/hero1.jpg" alt="firts slide" style="display: block; width: 100%;">
-    </slide>
-    <slide>
-      <img class="banner" src="assets/images/hero2.jpg" alt="firts slide" style="display: block; width: 100%;">
-    </slide>
-    <slide>
-      <img class="banner" src="assets/images/hero3.jpg" alt="firts slide" style="display: block; width: 100%;">
-    </slide>
-  </carousel>
-</div>
-<section class="">
-  <div class="d-flex justify-content-center pt-4 title">
-    <h1 class="my-4 ">Most viewed products</h1>
+<div class="over">
+  <div class="slide">
+    <carousel [(activeSlide)]="activeSlideIndex">
+      <slide>
+        <img class="banner" src="assets/images/hero1.jpg" alt="firts slide" style="display: block; width: 100%;">
+      </slide>
+      <slide>
+        <img class="banner" src="assets/images/hero2.jpg" alt="firts slide" style="display: block; width: 100%;">
+      </slide>
+      <slide>
+        <img class="banner" src="assets/images/hero3.jpg" alt="firts slide" style="display: block; width: 100%;">
+      </slide>
+    </carousel>
   </div>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-3" *ngFor="let product of products">
-        <div class="card h-100 shadow-sm">
-          <div class="image position-relative">
-            <img src="{{product.imageUrl}}" alt="{{product.name}}" class="img-fluid bg-info">
-            <div class="d-flex align-items-center justify-content-center hover-overlay">
-              <a (click)="addItemToBasket(product)" class="btn btn-md btn-primary  mr-2 text-white"><i
-                  class="fa fa-shopping-cart"></i></a>
-              <a routerLink="/shop/{{product.id}}" class="btn btn-md btn-primary">View</a>
+  <section class="">
+    <div class="row title">
+      <div class="col-md-12 col-ms-12">
+        <h2 class="my-4 text-center">Most viewed products</h2>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3" *ngFor="let product of products">
+          <div class="card h-100 shadow-sm">
+            <div class="image position-relative">
+              <img src="{{product.imageUrl}}" alt="{{product.name}}" class="img-fluid bg-info">
+              <div class="d-flex align-items-center justify-content-center hover-overlay">
+                <a (click)="addItemToBasket(product)" class="btn btn-md btn-primary  mr-2 text-white"><i
+                    class="fa fa-shopping-cart"></i></a>
+                <a routerLink="/shop/{{product.id}}" class="btn btn-md btn-primary">View</a>
+              </div>
             </div>
-          </div>
-          <div class="card-body d-flex flex-column">
-            <a routerLink="/shop/{{product.id}}">
-              <h6 class="text-uppercase">{{product.name}}</h6>
-            </a>
-            <span class="mb-2">{{product.price | currency}}</span>
-            <span class="mb-2 text-center bg-primary text-white">{{product.tierPriceDescription}}</span>
+            <div class="card-body d-flex flex-column">
+              <a routerLink="/shop/{{product.id}}">
+                <h6 class="text-uppercase">{{product.name}}</h6>
+              </a>
+              <span class="mb-2">{{product.price | currency}}</span>
+              <span class="mb-2 text-center bg-primary text-white">{{product.tierPriceDescription}}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </section>
+  <div class="row title">
+    <div class="col-md-12 col-ms-12">
+      <h2 class="my-4 text-center">Our Partners</h2>
+    </div>
   </div>
-</section>
-<div class="d-flex justify-content-center pt-4 title">
-  <h1 class="my-4">Our Partners</h1>
+  <section class="partner container-fluid text-center">
+    <div class="item">
+      <img src="https://www.alura.com.br/assets/api/cursos/512/angularjs-mvc.png" alt="partner" class="my-3">
+    </div>
+    <div class="item">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/.NET_Core_Logo.svg/1200px-.NET_Core_Logo.svg.png"
+        alt="partner" class="my-3">
+    </div>
+    <div class="item">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAjMb7VVdUux0Enzv8DBjBqIgf6CcTdP6Wcw&usqp=CAU"
+        alt="partner" class="my-3">
+    </div>
+    <div class="item">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRklV23Uy4wMHtPOl9F052wY3mccYuNESpWfw&usqp=CAU"
+        alt="partner" class="my-3">
+    </div>
+  </section>
+  <section>
+    <div class="row title">
+      <div class="col-md-12 col-ms-12">
+        <h2 class="my-4 text-center">Customers opinion</h2>
+      </div>
+    </div>
+  </section>
 </div>
-<section class="partner container-fluid text-center">
-  <div class="item">
-    <img src="https://www.alura.com.br/assets/api/cursos/512/angularjs-mvc.png" alt="partner" class="my-3">
-  </div>
-  <div class="item">
-    <img
-      src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/.NET_Core_Logo.svg/1200px-.NET_Core_Logo.svg.png"
-      alt="partner" class="my-3">
-  </div>
-  <div class="item">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAjMb7VVdUux0Enzv8DBjBqIgf6CcTdP6Wcw&usqp=CAU"
-      alt="partner" class="my-3">
-  </div>
-  <div class="item">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRklV23Uy4wMHtPOl9F052wY3mccYuNESpWfw&usqp=CAU"
-      alt="partner" class="my-3">
-  </div>
-</section>
-<section>
-  <div class="d-flex justify-content-center pt-4 title">
-    <h1 class="my-4">See what our customers say</h1>
-  </div>
-</section>

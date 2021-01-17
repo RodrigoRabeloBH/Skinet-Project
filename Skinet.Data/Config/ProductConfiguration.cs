@@ -10,7 +10,7 @@ namespace Skinet.Data.Config
         {
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Name).IsRequired().HasColumnType("varchar(100)").HasMaxLength(100);
-            builder.Property(p => p.Description).IsRequired().HasColumnType("varchar(180)").HasMaxLength(180);
+            builder.Property(p => p.Description).IsRequired().HasColumnType("varchar(400)").HasMaxLength(400);
             builder.Property(p => p.Price).IsRequired().HasColumnType("decimal(18,2)");
             builder.Property(p => p.ImageUrl).IsRequired();
             builder.HasOne(p => p.ProductBrand).WithMany().HasForeignKey(p => p.ProductBrandId);

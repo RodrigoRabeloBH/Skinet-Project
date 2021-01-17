@@ -1,11 +1,9 @@
 [
     {
-        "Id": 1,
         "Description": "Leve 2 e Pague 1",
         "Percent": 0.333
     },
     {
-        "Id": 2,
         "Description": "3 por R$10,00",
         "Percent": 0.333
     }

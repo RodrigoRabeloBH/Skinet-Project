@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Skinet.Model;
+using Skinet.Model.OrderAggregate;
 
 namespace Skinet.Data
 {
@@ -11,12 +12,17 @@ namespace Skinet.Data
         public DbSet<ProductType> ProductType { get; set; }
         public DbSet<ProductBrand> ProductBrand { get; set; }
         public DbSet<TierPrice> TierPrice { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderItem> OrderItem { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethod { get; set; }
+        public DbSet<ShippingAddress> ShippingAddress { get; set; }
 
         public SkinetContext(DbContextOptions<SkinetContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data source=skinet.db");
+            //optionsBuilder.UseSqlite("Data source=skinet.db");
+            optionsBuilder.UseSqlServer("Server=(localDB)\\MSSQLLocalDB;Database=Skinet.db;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,19 +30,6 @@ namespace Skinet.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-            if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
-            {
-                foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-                {
-                    var properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(decimal));
-
-                    foreach (var property in properties)
-                    {
-                        modelBuilder.Entity(entityType.Name).Property(property.Name).HasConversion<double>();
-                    }
-                }
-            }
         }
     }
 }

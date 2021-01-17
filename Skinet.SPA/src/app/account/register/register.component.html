@@ -13,7 +13,7 @@
           <li *ngFor="let error of errors"> {{error}}</li>
         </ul>
       </div>
-      <button  class="btn btn-primary btn-block my-3" type="submit">Register</button>
+      <button [disabled]="registerForm.invalid" class="btn btn-primary btn-block my-3" type="submit">Register</button>
     </form>
   </div>
 </div>

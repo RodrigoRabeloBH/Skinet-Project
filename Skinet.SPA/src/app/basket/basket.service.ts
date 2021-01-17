@@ -33,20 +33,6 @@ export class BasketService {
       );
   }
 
-  getBasketLoacalStorage() {
-
-    this.basket = JSON.parse(localStorage.getItem('basket'));
-    this.basketSource.next(this.basket);
-    return this.basket;
-  }
-
-  setBasketLocalStorage(basket: IBasket) {
-
-    localStorage.setItem('basket', JSON.stringify(basket));
-    this.basketSource.next(basket);
-    this.calculateTotals();
-  }
-
   setBasketRedis(basket: IBasket) {
     return this.http.post(this.baseUrl + 'baskets', basket)
       .subscribe((res: IBasket) => {
@@ -65,10 +51,10 @@ export class BasketService {
     const itemToAdd: IBasketItem = this.mapProductItemToBasketItem(item, quantity);
     let basket = this.getCurrentBasketValue();
     if (basket === null) {
-      basket = this.createBasket();
+      basket = this.createBasketRedis();
     }
     basket.items = this.addOrUpdateItem(basket.items, itemToAdd, quantity);
-    this.setBasketLocalStorage(basket);
+    this.setBasketRedis(basket);
   }
 
   incrementItemQuantity(item: IBasketItem) {
@@ -76,7 +62,7 @@ export class BasketService {
     const basket = this.getCurrentBasketValue();
     const foundItemIndex = basket.items.findIndex(i => i.id === item.id);
     basket.items[foundItemIndex].quantity++;
-    this.setBasketLocalStorage(basket);
+    this.setBasketRedis(basket);
 
   }
 
@@ -87,7 +73,7 @@ export class BasketService {
 
     if (basket.items[foundItemIndex].quantity > 1) {
       basket.items[foundItemIndex].quantity--;
-      this.setBasketLocalStorage(basket);
+      this.setBasketRedis(basket);
 
     } else {
       this.removeItemFromBasket(item);
@@ -103,9 +89,9 @@ export class BasketService {
       basket.items = basket.items.filter(i => i.id !== item.id);
 
       if (basket.items.length > 0) {
-        this.setBasketLocalStorage(basket);
+        this.setBasketRedis(basket);
       } else {
-        this.deleteBasketLocalStore(basket);
+        this.deleteBasketRedis(basket);
       }
     }
   }
@@ -120,14 +106,6 @@ export class BasketService {
     }, error => {
       console.log(error);
     });
-  }
-
-  deleteBasketLocalStore(basket: IBasket) {
-
-    this.basketSource.next(null);
-    this.basketTotalSource.next(null);
-    localStorage.removeItem('basket');
-
   }
 
   private addOrUpdateItem(items: IBasketItem[], itemToAdd: IBasketItem, quantity: number): IBasketItem[] {
@@ -149,13 +127,6 @@ export class BasketService {
     return basket;
   }
 
-  private createBasket(): IBasket {
-
-    const basket = new Basket();
-    localStorage.setItem('basket', JSON.stringify(basket));
-    return basket;
-  }
-
   private mapProductItemToBasketItem(item: Product, quantity: number): IBasketItem {
     return {
       id: item.id,
@@ -170,6 +141,7 @@ export class BasketService {
       tierPriceId: item.tierPriceId
     }
   }
+
   private calculateTotals() {
     const basket = this.getCurrentBasketValue();
     const shipping = 0;
@@ -192,4 +164,36 @@ export class BasketService {
 
     this.basketTotalSource.next({ shipping, total, subtotal });
   }
+
+  // Local Storage --------------------------------------------------------------
+
+
+  private createBasket(): IBasket {
+
+    const basket = new Basket();
+    localStorage.setItem('basket', JSON.stringify(basket));
+    return basket;
+  }
+
+  deleteBasketLocalStore(basket: IBasket) {
+
+    this.basketSource.next(null);
+    this.basketTotalSource.next(null);
+    localStorage.removeItem('basket');
+  }
+
+  setBasketLocalStorage(basket: IBasket) {
+
+    localStorage.setItem('basket', JSON.stringify(basket));
+    this.basketSource.next(basket);
+    this.calculateTotals();
+  }
+
+  getBasketLoacalStorage() {
+
+    this.basket = JSON.parse(localStorage.getItem('basket'));
+    this.basketSource.next(this.basket);
+    return this.basket;
+  }
+
 }

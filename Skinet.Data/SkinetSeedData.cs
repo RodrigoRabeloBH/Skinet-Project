@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Skinet.Model;
+using Skinet.Model.OrderAggregate;
 
 namespace Skinet.Data
 {
@@ -58,6 +59,20 @@ namespace Skinet.Data
                     await context.SaveChangesAsync();
                 }
 
+                if (!context.DeliveryMethod.Any())
+                {
+                    var dmData = File.ReadAllText(path + "delivery.json");
+
+                    var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(dmData);
+
+                    foreach (var item in methods)
+                    {
+                        context.DeliveryMethod.Add(item);
+                    }
+                    await context.SaveChangesAsync();
+                }
+
+
                 if (!context.Product.Any())
                 {
                     var productsData = File.ReadAllText(path + "products.json");
@@ -70,7 +85,7 @@ namespace Skinet.Data
                     }
                     await context.SaveChangesAsync();
                 }
-                
+
             }
             catch (Exception ex)
             {

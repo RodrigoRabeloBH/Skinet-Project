@@ -2,6 +2,7 @@ using AutoMapper;
 using Skinet.Api.Dto;
 using Skinet.Model;
 using Skinet.Model.Identity;
+using Skinet.Model.OrderAggregate;
 
 namespace Skinet.Api.Helper
 {
@@ -27,6 +28,8 @@ namespace Skinet.Api.Helper
             CreateMap<CustomerBasketDto, CustomerBasket>().ReverseMap();
 
             CreateMap<BasketItemDto, BasketItem>().ReverseMap();
+
+            CreateMap<AddressDto, ShippingAddress>().ReverseMap();
         }
     }
 }
