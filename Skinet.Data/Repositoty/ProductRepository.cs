@@ -12,7 +12,7 @@ namespace Skinet.Data.Repositoty
         public ProductRepository(SkinetContext context) : base(context) { }
         public async Task<Product> GetProductById(int id)
         {
-            return await _context.Product
+            return await _context.Products
                     .Include(p => p.ProductBrand)
                     .Include(p => p.ProductType)
                     .Include(p => p.TierPrice)
@@ -20,7 +20,7 @@ namespace Skinet.Data.Repositoty
         }
         public async Task<IEnumerable<Product>> GetProductByName(string search)
         {
-            return await _context.Product
+            return await _context.Products
                     .Include(p => p.ProductBrand)
                     .Include(p => p.ProductType)
                     .Include(p => p.TierPrice)
@@ -31,7 +31,7 @@ namespace Skinet.Data.Repositoty
         {
             if (brandId.HasValue && typeId.HasValue)
             {
-                return await _context.Product
+                return await _context.Products
                     .Include(p => p.ProductBrand)
                     .Include(p => p.ProductType)
                     .Include(p => p.TierPrice)
@@ -40,7 +40,7 @@ namespace Skinet.Data.Repositoty
             }
             else if (brandId.HasValue && !typeId.HasValue)
             {
-                return await _context.Product
+                return await _context.Products
                     .Include(p => p.ProductBrand)
                     .Include(p => p.ProductType)
                     .Include(p => p.TierPrice)
@@ -49,7 +49,7 @@ namespace Skinet.Data.Repositoty
             }
             else if (!brandId.HasValue && typeId.HasValue)
             {
-                return await _context.Product
+                return await _context.Products
                     .Include(p => p.ProductBrand)
                     .Include(p => p.ProductType)
                     .Include(p => p.TierPrice)
@@ -63,7 +63,7 @@ namespace Skinet.Data.Repositoty
                 switch (sort)
                 {
                     case "priceAsc":
-                        products = await _context.Product
+                        products = await _context.Products
                             .AsNoTracking()
                             .Include(p => p.ProductBrand)
                             .Include(p => p.ProductType)
@@ -73,7 +73,7 @@ namespace Skinet.Data.Repositoty
                         break;
 
                     case "priceDesc":
-                        products = await _context.Product
+                        products = await _context.Products
                            .AsNoTracking()
                            .Include(p => p.ProductBrand)
                            .Include(p => p.ProductType)
@@ -83,7 +83,7 @@ namespace Skinet.Data.Repositoty
                         break;
 
                     default:
-                        products = await _context.Product
+                        products = await _context.Products
                            .AsNoTracking()
                            .Include(p => p.ProductBrand)
                            .Include(p => p.ProductType)

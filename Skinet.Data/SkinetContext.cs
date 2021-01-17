@@ -8,22 +8,17 @@ namespace Skinet.Data
 {
     public class SkinetContext : DbContext
     {
-        public DbSet<Product> Product { get; set; }
-        public DbSet<ProductType> ProductType { get; set; }
-        public DbSet<ProductBrand> ProductBrand { get; set; }
-        public DbSet<TierPrice> TierPrice { get; set; }
-        public DbSet<Order> Order { get; set; }
-        public DbSet<OrderItem> OrderItem { get; set; }
-        public DbSet<DeliveryMethod> DeliveryMethod { get; set; }
-        public DbSet<ShippingAddress> ShippingAddress { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<ProductBrand> ProductBrands { get; set; }
+        public DbSet<TierPrice> TierPrices { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+        public DbSet<ShippingAddress> ShippingAddresses { get; set; }
 
         public SkinetContext(DbContextOptions<SkinetContext> options) : base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder.UseSqlite("Data source=skinet.db");
-            optionsBuilder.UseSqlServer("Server=(localDB)\\MSSQLLocalDB;Database=Skinet.db;Trusted_Connection=True;MultipleActiveResultSets=true");
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

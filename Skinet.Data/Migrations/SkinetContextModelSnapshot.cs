@@ -40,7 +40,7 @@ namespace Skinet.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeliveryMethod");
+                    b.ToTable("DeliveryMethods");
                 });
 
             modelBuilder.Entity("Skinet.Model.OrderAggregate.Order", b =>
@@ -62,7 +62,7 @@ namespace Skinet.Data.Migrations
                     b.Property<string>("PaymentIntentId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ShippingAddressId")
+                    b.Property<int>("ShippingAddressId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -78,7 +78,7 @@ namespace Skinet.Data.Migrations
 
                     b.HasIndex("ShippingAddressId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Skinet.Model.OrderAggregate.OrderItem", b =>
@@ -89,9 +89,6 @@ namespace Skinet.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderId1")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -113,9 +110,7 @@ namespace Skinet.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("OrderId1");
-
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Skinet.Model.OrderAggregate.ShippingAddress", b =>
@@ -148,7 +143,7 @@ namespace Skinet.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShippingAddress");
+                    b.ToTable("ShippingAddresses");
                 });
 
             modelBuilder.Entity("Skinet.Model.Product", b =>
@@ -207,7 +202,7 @@ namespace Skinet.Data.Migrations
 
                     b.HasIndex("TierPriceId1");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Skinet.Model.ProductBrand", b =>
@@ -222,7 +217,7 @@ namespace Skinet.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductBrand");
+                    b.ToTable("ProductBrands");
                 });
 
             modelBuilder.Entity("Skinet.Model.ProductType", b =>
@@ -237,7 +232,7 @@ namespace Skinet.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductType");
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("Skinet.Model.TierPrice", b =>
@@ -255,7 +250,7 @@ namespace Skinet.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TierPrice");
+                    b.ToTable("TierPrices");
                 });
 
             modelBuilder.Entity("Skinet.Model.OrderAggregate.Order", b =>
@@ -268,20 +263,18 @@ namespace Skinet.Data.Migrations
 
                     b.HasOne("Skinet.Model.OrderAggregate.ShippingAddress", "ShippingAddress")
                         .WithMany()
-                        .HasForeignKey("ShippingAddressId");
+                        .HasForeignKey("ShippingAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Skinet.Model.OrderAggregate.OrderItem", b =>
                 {
-                    b.HasOne("Skinet.Model.OrderAggregate.Order", null)
+                    b.HasOne("Skinet.Model.OrderAggregate.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Skinet.Model.OrderAggregate.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId1");
                 });
 
             modelBuilder.Entity("Skinet.Model.Product", b =>

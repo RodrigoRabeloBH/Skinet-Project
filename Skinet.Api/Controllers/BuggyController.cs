@@ -17,7 +17,7 @@ namespace Skinet.Api.Controllers
         [HttpGet("notfound")]
         public ActionResult GetNotFountRequest()
         {
-            var thing = _context.Product.Find(42);
+            var thing = _context.Products.Find(42);
 
             if (thing == null) return NotFound(new ApiResponse(404));
 
@@ -27,7 +27,7 @@ namespace Skinet.Api.Controllers
         [HttpGet("servererror")]
         public ActionResult GetServerError()
         {
-            var thing = _context.Product.Find(42);
+            var thing = _context.Products.Find(42);
 
             var thingToReturn = thing.ToString();
 

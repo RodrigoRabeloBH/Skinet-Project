@@ -49,7 +49,7 @@ namespace Skinet.Data.Repositoty
 
                 var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod.Id, subtotal);
 
-                await _context.Order.AddAsync(order);
+                await _context.Orders.AddAsync(order);
 
                 await _context.SaveChangesAsync();
 

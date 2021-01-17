@@ -10,7 +10,7 @@ using Skinet.Data.Identity;
 namespace Skinet.Data.Identity.Migrations
 {
     [DbContext(typeof(AppIdentityContext))]
-    [Migration("20210117011251_AddedIdentity")]
+    [Migration("20210117013924_AddedIdentity")]
     partial class AddedIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

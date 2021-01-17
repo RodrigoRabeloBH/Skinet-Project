@@ -17,7 +17,7 @@ namespace Skinet.Data
         {
             try
             {
-                if (!context.ProductBrand.Any())
+                if (!context.ProductBrands.Any())
                 {
                     var brandsData = File.ReadAllText(path + "brands.json");
 
@@ -25,13 +25,13 @@ namespace Skinet.Data
 
                     foreach (var item in brands)
                     {
-                        context.ProductBrand.Add(item);
+                        context.ProductBrands.Add(item);
                     }
 
                     await context.SaveChangesAsync();
                 }
 
-                if (!context.ProductType.Any())
+                if (!context.ProductTypes.Any())
                 {
                     var typesData = File.ReadAllText(path + "types.json");
 
@@ -39,13 +39,13 @@ namespace Skinet.Data
 
                     foreach (var item in types)
                     {
-                        context.ProductType.Add(item);
+                        context.ProductTypes.Add(item);
                     }
 
                     await context.SaveChangesAsync();
                 }
 
-                if (!context.TierPrice.Any())
+                if (!context.TierPrices.Any())
                 {
                     var tierpricesData = File.ReadAllText(path + "tierprice.json");
 
@@ -53,13 +53,13 @@ namespace Skinet.Data
 
                     foreach (var tierprice in tierprices)
                     {
-                        context.TierPrice.Add(tierprice);
+                        context.TierPrices.Add(tierprice);
                     }
 
                     await context.SaveChangesAsync();
                 }
 
-                if (!context.DeliveryMethod.Any())
+                if (!context.DeliveryMethods.Any())
                 {
                     var dmData = File.ReadAllText(path + "delivery.json");
 
@@ -67,13 +67,13 @@ namespace Skinet.Data
 
                     foreach (var item in methods)
                     {
-                        context.DeliveryMethod.Add(item);
+                        context.DeliveryMethods.Add(item);
                     }
                     await context.SaveChangesAsync();
                 }
 
 
-                if (!context.Product.Any())
+                if (!context.Products.Any())
                 {
                     var productsData = File.ReadAllText(path + "products.json");
 
@@ -81,7 +81,7 @@ namespace Skinet.Data
 
                     foreach (var item in products)
                     {
-                        context.Product.Add(item);
+                        context.Products.Add(item);
                     }
                     await context.SaveChangesAsync();
                 }

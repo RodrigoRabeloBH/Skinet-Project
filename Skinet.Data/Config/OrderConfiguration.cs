@@ -11,7 +11,7 @@ namespace Skinet.Data.Config
         {
             builder.Property(s => s.Status).HasConversion(o => o.ToString(), o => (OrderStatus)Enum.Parse(typeof(OrderStatus), o));
             builder.Property(o => o.Subtotal).HasColumnType("decimal(18,2)");
-            builder.HasMany(o => o.OrderItems).WithOne().HasForeignKey(io => io.OrderId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(o => o.OrderItems).WithOne(io => io.Order).HasForeignKey(io => io.OrderId);
         }
     }
 }
