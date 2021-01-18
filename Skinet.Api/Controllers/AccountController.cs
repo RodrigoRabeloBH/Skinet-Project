@@ -89,7 +89,6 @@ namespace Skinet.Api.Controllers
                 Email = user.Email,
                 Token = _tokenServices.CreateToken(user),
                 DisplayName = user.DisplayName
-
             };
         }
 

@@ -2,6 +2,7 @@ namespace Skinet.Model.OrderAggregate
 {
     public class ShippingAddress : Entity
     {
+        public string CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Street { get; set; }

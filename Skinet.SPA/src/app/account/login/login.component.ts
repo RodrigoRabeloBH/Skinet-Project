@@ -33,14 +33,11 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.accountService.login(this.loginForm.value)
-      .subscribe(() => {
+      .subscribe((res) => {
         this.router.navigateByUrl(this.returnUrl);
       }, error => {
-
         console.log(error);
-
         this.errors.push(error.error.message);
-
       });
   }
 }

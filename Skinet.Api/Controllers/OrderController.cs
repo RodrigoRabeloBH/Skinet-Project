@@ -34,6 +34,8 @@ namespace Skinet.Api.Controllers
 
             var shippingAddress = _map.Map<AddressDto, ShippingAddress>(orderDto.ShippingAddress);
 
+            shippingAddress.CustomerId = customerId;
+
             var order = await _rep.CreateOrder(customerId, email, orderDto.DeliveryMethodId, orderDto.BasketId, shippingAddress);
 
             if (order == null) return BadRequest(new ApiResponse(400, "Problem creating order."));
