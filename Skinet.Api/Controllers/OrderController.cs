@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Security.Claims;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -35,7 +32,7 @@ namespace Skinet.Api.Controllers
 
             string customerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var shippingAddress = _map.Map<AddressDto, ShippingAddress>(orderDto.ShippingAddres);
+            var shippingAddress = _map.Map<AddressDto, ShippingAddress>(orderDto.ShippingAddress);
 
             var order = await _rep.CreateOrder(customerId, email, orderDto.DeliveryMethodId, orderDto.BasketId, shippingAddress);
 
@@ -73,20 +70,6 @@ namespace Skinet.Api.Controllers
             var orders = await _rep.GetOrdersForUser(email, customerId);
 
             return Ok(_map.Map<List<OrderToReturnDto>>(orders));
-        }
-
-        [HttpGet("shippingAddress/{zipcode}")]
-        public async Task<IActionResult> GetShippingAddress(string zipcode)
-        {
-            object shippingAddress = null;
-
-            using (var http = new HttpClient())
-            {
-                var response = await http.GetAsync("https://viacep.com.br/ws/" + zipcode + "/json/");
-
-                shippingAddress = response.Content.ReadAsStreamAsync().Result;
-            }
-            return Ok(shippingAddress);
         }
     }
 }

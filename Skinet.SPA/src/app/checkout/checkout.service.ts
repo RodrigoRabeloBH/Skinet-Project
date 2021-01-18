@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { ThrowStmt } from '@angular/compiler';
 import { Injectable } from '@angular/core';
+import { Address } from 'cluster';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { DeliveryMethod } from '../shared/Models/DeliveryMethod';
+import { OrderToCreate, OrderToReturn } from '../shared/Models/Order';
 import { ViaCepAddress } from '../shared/Models/ViaCepAddress';
 
 @Injectable({
@@ -18,7 +19,7 @@ export class CheckoutService {
 
   getAddressViaCep(zipcode: string): Observable<ViaCepAddress> {
 
-    return this.http.get<ViaCepAddress>(this.baseUrl + 'order/shippingaddress/' + zipcode );
+    return this.http.get<ViaCepAddress>(this.baseUrl + 'shippingaddress/' + zipcode);
   }
 
   getDeliveryMethods() {
@@ -29,5 +30,13 @@ export class CheckoutService {
           return dm.sort((a, b) => b.price - a.price);
         })
       );
+  }
+
+  saveShippingAddress(address: Address) {
+    return this.http.post(this.baseUrl + 'shippingaddress', address);
+  }
+
+  createOrder(order: OrderToCreate): Observable<OrderToReturn> {
+    return this.http.post<OrderToReturn>(this.baseUrl + 'order', order);
   }
 }

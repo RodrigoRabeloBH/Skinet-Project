@@ -19,6 +19,8 @@ namespace Skinet.Api.Dto
         [Required(ErrorMessage = "{0} is required.")]
         public int Number { get; set; }
 
+        public string Complement { get; set; }
+
 
         [Required(ErrorMessage = "{0} is required.")]
         public string District { get; set; }
@@ -30,7 +32,7 @@ namespace Skinet.Api.Dto
 
         [Required(ErrorMessage = "{0} is required.")]
         public string State { get; set; }
-        
+
 
         [Required(ErrorMessage = "{0} is required.")]
         public string ZipCode { get; set; }

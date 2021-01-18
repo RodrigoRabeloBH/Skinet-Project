@@ -6,6 +6,7 @@ import { IBasket, Basket, IBasketTotals } from '../shared/Models/Basket';
 import { map } from 'rxjs/operators';
 import { IBasketItem } from '../shared/Models/BasketItem';
 import { Product } from '../shared/Models/Product';
+import { DeliveryMethod } from '../shared/Models/DeliveryMethod';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,14 @@ export class BasketService {
   basket$ = this.basketSource.asObservable();
   basketTotal$ = this.basketTotalSource.asObservable();
   basket: IBasket;
+  shipping = 0;
 
   constructor(private http: HttpClient) { }
+
+  setShippingPrice(delivery: DeliveryMethod) {
+    this.shipping = delivery.price;
+    this.calculateTotals();
+  }
 
   getBasketRedis(id: string) {
 
@@ -96,6 +103,12 @@ export class BasketService {
     }
   }
 
+  deleteLocalBasket() {
+    this.basketSource.next(null);
+    this.basketTotalSource.next(null);
+    localStorage.removeItem('basket_id');
+  }
+
   deleteBasketRedis(basket: IBasket) {
 
     return this.http.delete(this.baseUrl + 'baskets?id=' + basket.id).subscribe(() => {
@@ -144,11 +157,12 @@ export class BasketService {
 
   private calculateTotals() {
     const basket = this.getCurrentBasketValue();
-    const shipping = 0;
+    const shipping = this.shipping;
     const subtotal = basket.items.reduce((i, p) => (p.price * p.quantity) + i, 0);
-    let total = 0;
+    let total = 0 + shipping;
 
     basket.items.forEach((item) => {
+
       if (item.tierPriceId === 2 && item.quantity % 2 === 0) {
 
         total += item.price * item.quantity * item.percent;
