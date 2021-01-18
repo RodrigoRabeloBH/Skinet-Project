@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Address } from 'cluster';
 import { AccountService } from 'src/app/account/account.service';
 import { ViaCepAddress } from 'src/app/shared/Models/ViaCepAddress';
 import { CheckoutService } from '../checkout.service';
@@ -13,7 +12,7 @@ import { CheckoutService } from '../checkout.service';
 export class CheckoutAddressComponent implements OnInit {
 
   @Input() checkoutForm: FormGroup;
-  isSame: boolean = true;
+  wasSave: boolean = false;
 
   constructor(private checkoutService: CheckoutService, private accountService: AccountService) { }
 
@@ -34,10 +33,6 @@ export class CheckoutAddressComponent implements OnInit {
       });
   }
 
-
-  PaymentAndDeliveryAreSame() {
-    this.isSame = !this.isSame;
-  }
   mapToShippingAddres(address: ViaCepAddress): any {
 
     return {
@@ -52,16 +47,7 @@ export class CheckoutAddressComponent implements OnInit {
   saveUserAddress() {
     this.accountService.updateUserAddress(this.checkoutForm.get('addressForm').value)
       .subscribe(() => {
-        console.log('Address Saved!');
-      }, error => {
-        console.log(error);
-      });
-  }
-
-  saveShippingAddress() {
-    this.checkoutService.saveShippingAddress(this.checkoutForm.get('addressForm').value)
-      .subscribe(() => {
-        console.log('Address Saved!');
+        this.wasSave = true; 
       }, error => {
         console.log(error);
       });
