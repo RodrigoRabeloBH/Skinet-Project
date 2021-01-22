@@ -3,6 +3,7 @@
     <i class="fa fa-check-circle fa-5x text-success mb-3"></i>
     <h3>Thank you. Your order is confirmed!</h3>
     <p class="mb-4"> Your order has not shipped yet, but this is to be expected as we are real store.</p>
-    <button class="btn btn-success btn-sm">View your order</button>
+    <button class="btn btn-success btn-sm" routerLink="/orders/{{order?.id}}" *ngIf="order">View your order</button>
+    <button class="btn btn-success btn-sm" routerLink="/orders" *ngIf="!order">View your orders</button>
   </div>
 </div>

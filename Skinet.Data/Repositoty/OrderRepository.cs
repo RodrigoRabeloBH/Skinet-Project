@@ -15,19 +15,22 @@ namespace Skinet.Data.Repositoty
         private readonly IBasketRepository _basketRepo;
         private readonly IDeliveryMethodRepository _deliveryRepo;
         private readonly IShippingAddressRepository _shippingRepo;
+        private readonly IBasketServices _basketService;
 
         public OrderRepository(SkinetContext context, IProductRepository productRepo,
                                IBasketRepository basketRepo, IDeliveryMethodRepository deliveryRepo,
-                               IShippingAddressRepository shippingRepo)
+                               IShippingAddressRepository shippingRepo, IBasketServices basketService)
         {
             _context = context;
             _productRepo = productRepo;
             _basketRepo = basketRepo;
             _deliveryRepo = deliveryRepo;
             _shippingRepo = shippingRepo;
+            _basketService = basketService;
         }
 
-        public async Task<Order> CreateOrder(string customerId, string buyerEmail, int deliveryMethodId, string basketId, ShippingAddress shippingAddress)
+        public async Task<Order> CreateOrder(string customerId, string buyerEmail, int deliveryMethodId,
+                                             string basketId, ShippingAddress shippingAddress)
         {
             try
             {
@@ -50,7 +53,7 @@ namespace Skinet.Data.Repositoty
 
                 var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod.Id, subtotal, customerId);
 
-                order.Total = subtotal + deliveryMethod.Price;
+                order.Total = _basketService.CalculeteTotals(basket) + deliveryMethod.Price;
 
                 await _context.Orders.AddAsync(order);
 
@@ -60,14 +63,12 @@ namespace Skinet.Data.Repositoty
 
                 order.DeliveryMethod = deliveryMethod;
 
-
                 return order;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
-
         }
 
         public async Task<IEnumerable<DeliveryMethod>> GetDeliveryMethods()

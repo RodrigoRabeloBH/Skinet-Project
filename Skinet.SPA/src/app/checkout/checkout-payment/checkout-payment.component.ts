@@ -28,8 +28,7 @@ export class CheckoutPaymentComponent implements OnInit {
     const orderToCreate = this.getOrderToCreate(basket);
 
     this.checkoutService.createOrder(orderToCreate)
-      .subscribe((res: OrderToReturn) => {
-        console.log(res);
+      .subscribe((res: OrderToReturn) => {      
         this.basketService.deleteLocalBasket();
         const navigationExtras: NavigationExtras = { state: res }
         this.router.navigate(['checkout/success'], navigationExtras);

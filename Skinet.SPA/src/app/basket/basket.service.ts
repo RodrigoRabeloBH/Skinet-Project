@@ -21,6 +21,7 @@ export class BasketService {
   basketTotal$ = this.basketTotalSource.asObservable();
   basket: IBasket;
   shipping = 0;
+  total = 0;
 
   constructor(private http: HttpClient) { }
 
@@ -156,58 +157,19 @@ export class BasketService {
   }
 
   private calculateTotals() {
-    const basket = this.getCurrentBasketValue();
+    let basket = this.getCurrentBasketValue();
     const shipping = this.shipping;
     const subtotal = basket.items.reduce((i, p) => (p.price * p.quantity) + i, 0);
-    let total = 0 + shipping;
+    let total;
 
-    basket.items.forEach((item) => {
-
-      if (item.tierPriceId === 2 && item.quantity % 2 === 0) {
-
-        total += item.price * item.quantity * item.percent;
-
-      } else if (item.tierPriceId === 1 && item.quantity % 3 === 0) {
-
-        total += 10 * item.quantity * item.percent
-
-      } else {
-        total += item.price * item.quantity;
-      }
-    });
-
-    this.basketTotalSource.next({ shipping, total, subtotal });
+    this.http.post(this.baseUrl + 'baskets/basketTotal', basket)
+      .subscribe((res: number) => {
+        total = res + shipping;
+        this.basketTotalSource.next({ shipping, total, subtotal });
+      });
   }
 
-  // Local Storage --------------------------------------------------------------
-
-
-  private createBasket(): IBasket {
-
-    const basket = new Basket();
-    localStorage.setItem('basket', JSON.stringify(basket));
-    return basket;
+  calculateItemTotal(item: IBasketItem) {
+    return this.http.post(this.baseUrl + 'baskets/basketItemTotal', item);
   }
-
-  deleteBasketLocalStore(basket: IBasket) {
-
-    this.basketSource.next(null);
-    this.basketTotalSource.next(null);
-    localStorage.removeItem('basket');
-  }
-
-  setBasketLocalStorage(basket: IBasket) {
-
-    localStorage.setItem('basket', JSON.stringify(basket));
-    this.basketSource.next(basket);
-    this.calculateTotals();
-  }
-
-  getBasketLoacalStorage() {
-
-    this.basket = JSON.parse(localStorage.getItem('basket'));
-    this.basketSource.next(this.basket);
-    return this.basket;
-  }
-
 }

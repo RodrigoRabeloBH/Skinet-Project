@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BasketService } from 'src/app/basket/basket.service';
-import { Basket, IBasket } from '../../Models/Basket';
+import { IBasket } from '../../Models/Basket';
 import { IBasketItem } from '../../Models/BasketItem';
 
 @Component({
@@ -18,6 +18,8 @@ export class BasketSumaryComponent implements OnInit {
   @Output() remove: EventEmitter<IBasketItem> = new EventEmitter<IBasketItem>();
   @Output() total: EventEmitter<IBasketItem> = new EventEmitter<IBasketItem>();
   @Input() isBasket: boolean = true;
+
+  itemTotal: number
 
 
   constructor(private basketService: BasketService) { }

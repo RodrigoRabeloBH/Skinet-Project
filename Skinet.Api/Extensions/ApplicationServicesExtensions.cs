@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Skinet.Api.Errors;
 using Skinet.Data;
 using Skinet.Data.Repositoty;
+using Skinet.Service;
 using Skinet.Service.Interfaces;
 using StackExchange.Redis;
 
@@ -29,8 +30,10 @@ namespace Skinet.Api.Extensions
             services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddScoped<IDeliveryMethodRepository, DeliveryMethodRepository>();
-            
+
             services.AddScoped<IShippingAddressRepository, ShippingAddressRepository>();
+
+            services.AddScoped<IBasketServices, BasketServices>();
 
             services.AddSingleton<IConnectionMultiplexer>(c =>
                 {

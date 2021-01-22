@@ -17,10 +17,13 @@ export class CheckoutSuccessComponent implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation && navigation.extras && navigation.extras.state;
 
+
     if (state) {
       this.order = state as OrderToReturn;
+      console.log(this.order);
       this.basketService.shipping = 0;
     }
+
   }
 
   ngOnInit() {

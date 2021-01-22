@@ -31,20 +31,11 @@ export class AppComponent implements OnInit {
     }
   }
 
-  loadbasketLocalStorage() {
-
-    const basket = localStorage.getItem('basket');
-    if (basket) {
-      this.basketService.getBasketLoacalStorage();
-    }
-  }
-
   loadCurrentUser() {
 
     const token = localStorage.getItem('token');
     this.accountService.loadCurrentUser(token)
-      .subscribe(() => {
-        console.log('loaded user');
+      .subscribe(() => {        
       }, error => {
         console.log(error);
       });
